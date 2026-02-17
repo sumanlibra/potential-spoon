@@ -1,12 +1,60 @@
 import { useMemo, useState } from 'react'
 
 const products = [
-  { id: 1, name: 'Classic Tee', category: 'Clothing', price: 24.99, image: '👕' },
-  { id: 2, name: 'Running Shoes', category: 'Footwear', price: 69.99, image: '👟' },
-  { id: 3, name: 'Leather Wallet', category: 'Accessories', price: 34.99, image: '👛' },
-  { id: 4, name: 'Wireless Headphones', category: 'Electronics', price: 129.99, image: '🎧' },
-  { id: 5, name: 'Sports Watch', category: 'Electronics', price: 89.99, image: '⌚' },
-  { id: 6, name: 'Travel Backpack', category: 'Accessories', price: 54.99, image: '🎒' },
+  {
+    id: 1,
+    name: 'Linen Summer Shirt',
+    category: 'Men',
+    price: 48,
+    rating: 4.8,
+    image:
+      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 2,
+    name: 'Tailored Wide-Leg Trousers',
+    category: 'Women',
+    price: 62,
+    rating: 4.7,
+    image:
+      'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 3,
+    name: 'Organic Cotton Hoodie',
+    category: 'Unisex',
+    price: 54,
+    rating: 4.9,
+    image:
+      'https://images.unsplash.com/photo-1619603364904-c0498317e145?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 4,
+    name: 'Minimal Knit Dress',
+    category: 'Women',
+    price: 76,
+    rating: 4.6,
+    image:
+      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 5,
+    name: 'Selvedge Denim Jacket',
+    category: 'Men',
+    price: 88,
+    rating: 4.9,
+    image:
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 6,
+    name: 'Relaxed Cargo Pants',
+    category: 'Unisex',
+    price: 59,
+    rating: 4.5,
+    image:
+      'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=80',
+  },
 ]
 
 export default function App() {
@@ -50,19 +98,29 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <h1>FreshCart</h1>
-        <span className="cart-pill">Cart: {cartCount}</span>
+      <header className="hero">
+        <div>
+          <p className="eyebrow">New Season • Fresh Drop</p>
+          <h1>North Thread Clothing Co.</h1>
+          <p className="hero-copy">
+            Elevated essentials and everyday silhouettes designed for comfort, crafted
+            with premium fabrics.
+          </p>
+        </div>
+        <div className="cart-pill">🛍️ Cart {cartCount}</div>
       </header>
 
       <main className="layout">
         <section className="catalog">
-          <h2>Shop Products</h2>
+          <div className="section-head">
+            <h2>Shop Clothing</h2>
+            <span>{filteredProducts.length} items</span>
+          </div>
 
           <div className="controls">
             <input
               type="search"
-              placeholder="Search products"
+              placeholder="Search shirts, hoodies, trousers..."
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
@@ -81,28 +139,31 @@ export default function App() {
           <div className="grid">
             {filteredProducts.map((product) => (
               <article className="card" key={product.id}>
-                <div className="emoji" aria-hidden>
-                  {product.image}
+                <img src={product.image} alt={product.name} className="product-image" />
+                <div className="card-content">
+                  <p className="category">{product.category}</p>
+                  <h3>{product.name}</h3>
+                  <p className="rating">⭐ {product.rating.toFixed(1)}</p>
+                  <div className="card-footer">
+                    <strong>${product.price.toFixed(2)}</strong>
+                    <button onClick={() => addToCart(product)}>Add</button>
+                  </div>
                 </div>
-                <h3>{product.name}</h3>
-                <p>{product.category}</p>
-                <strong>${product.price.toFixed(2)}</strong>
-                <button onClick={() => addToCart(product)}>Add to cart</button>
               </article>
             ))}
           </div>
         </section>
 
         <aside className="cart">
-          <h2>Your Cart</h2>
+          <h2>Order Summary</h2>
           {cart.length === 0 ? (
-            <p className="empty">No items yet.</p>
+            <p className="empty">Your bag is empty. Add your favorite looks.</p>
           ) : (
             <ul>
               {cart.map((item) => (
                 <li key={item.id}>
                   <span>
-                    {item.name} x {item.quantity}
+                    {item.name} <small>x {item.quantity}</small>
                   </span>
                   <div>
                     <strong>${(item.price * item.quantity).toFixed(2)}</strong>
